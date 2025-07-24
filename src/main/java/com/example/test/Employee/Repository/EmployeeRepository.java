@@ -13,5 +13,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "JOIN FETCH er.role " +
             "WHERE e.ypgwId = :ypgwId")
     Optional<Employee> findByYpgwIdWithRoles(@Param("ypgwId") String ypgwId);
-    Boolean existsByYpgwId(String ypgwId);
 }

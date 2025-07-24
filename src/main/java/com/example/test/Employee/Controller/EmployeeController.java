@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/employee")
 @RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @PostMapping("/employee")
+    @PostMapping
     public ResponseEntity<EmployeeResponseDto> saveEmployee(@RequestBody EmployeeRequestDto requestDto) {
         return ResponseEntity.ok(employeeService.saveEmployee(requestDto));
     }

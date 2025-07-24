@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/employeeRole")
 @RequiredArgsConstructor
 public class EmployeeRoleController {
 
     private final EmployeeRoleService employeeRoleService;
 
-    @PostMapping("/employeeRole")
+    @PostMapping
     public ResponseEntity<List<EmployeeRole>> saveEmployeeRole(@RequestBody EmployeeRoleRequestDto request) {
         List<EmployeeRole> savedList = employeeRoleService.saveEmployeeRole(request.getYpgwId(),request.getRoleIds());
         return ResponseEntity.ok(savedList);

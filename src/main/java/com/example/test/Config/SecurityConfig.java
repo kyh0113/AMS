@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-
 
 @Configuration
 @EnableWebSecurity
@@ -29,15 +27,22 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            AuthenticationProvider customAuthenticationProvider) throws Exception {
 
-        http
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers(
+                        "/css/**",
+                        "/js/**",
+                        "/employee",
+                        "/role",
+                        "/employeeRole",
+                        "/department"
                 )
+        )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/employee").permitAll()
                         .requestMatchers(HttpMethod.POST, "/role").permitAll()
                         .requestMatchers(HttpMethod.POST, "/employeeRole").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/department").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -52,7 +57,18 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 )
-                .authenticationProvider(customAuthenticationProvider); // 여기서 주입
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            if (request.getRequestURI().equals("/login")) {
+                                response.sendRedirect("/login");
+                            } else {
+                                response.setStatus(401);
+                                response.setContentType("application/json");
+                                response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                            }
+                        })
+                )
+                .authenticationProvider(customAuthenticationProvider);
 
         return http.build();
     }

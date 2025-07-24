@@ -9,4 +9,5 @@ public class EmployeeRequestDto {
     private String ypgwId;
     private String name;
     private String password;
+    private String departmentName;
 }

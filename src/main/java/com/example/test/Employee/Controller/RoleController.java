@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping
+@RequestMapping("/role")
 @RequiredArgsConstructor
 public class RoleController {
 
     private final RoleService roleService;
 
-    @PostMapping("/role")
+    @PostMapping
     public ResponseEntity<Role> saveRole(@RequestBody Role role){
         Role saved = roleService.save(role);
         return ResponseEntity.ok(saved);

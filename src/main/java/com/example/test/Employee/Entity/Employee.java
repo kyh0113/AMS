@@ -1,5 +1,6 @@
 package com.example.test.Employee.Entity;
 
+import com.example.test.Department.Entity.Department;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,8 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<EmployeeRole> employeeRole = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

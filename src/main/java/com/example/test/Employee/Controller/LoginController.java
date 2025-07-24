@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/login")
 public class LoginController {
 
-    @GetMapping("/login")
+    @GetMapping
     public String loginForm(HttpServletRequest request, Model model) {
         // 세션에서 에러 메시지 꺼내기
         String errorMessage = (String) request.getSession().getAttribute("LOGIN_ERROR");
